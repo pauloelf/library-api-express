@@ -1,4 +1,5 @@
 import type { SignOptions } from 'jsonwebtoken'
+import 'dotenv/config'
 
 export const authConfig = {
   jwtSecret: process.env.JWT_SECRET!,
