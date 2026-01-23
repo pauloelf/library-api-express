@@ -9,4 +9,8 @@ export class AccountRepository {
   async create(data: CreateAccountDTO) {
     return prisma.account.create({ data })
   }
+
+  async findById(accountId: string) {
+    return prisma.account.findUnique({ where: { id: accountId } })
+  }
 }
