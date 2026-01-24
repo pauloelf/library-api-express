@@ -39,4 +39,8 @@ export class BookRepository {
       },
     })
   }
+
+  async findById(id: string) {
+    return prisma.book.findUnique({ where: { id } })
+  }
 }
