@@ -1,6 +1,7 @@
 import { prisma } from '@/database/prisma.js'
 import type { CreateBookDTO } from '../dtos/CreateBookDTO.js'
 import type { FindByTitleAndAuthorDTO } from '../dtos/FindByTitleAndAuthorDTO.js'
+import type { FindManyPaginatedDTO } from '../dtos/findManyPaginatedDTO.js'
 
 export class BookRepository {
   async countByAuthorId(authorId: string) {
@@ -16,6 +17,25 @@ export class BookRepository {
       where: {
         authorId,
         title,
+      },
+    })
+  }
+
+  async countAll() {
+    return prisma.book.count()
+  }
+
+  async findManyPaginated({ limit, page }: FindManyPaginatedDTO) {
+    const skip = (page - 1) * limit
+
+    return prisma.book.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        author: {
+          select: { id: true, name: true, email: true, role: true },
+        },
       },
     })
   }
