@@ -43,4 +43,11 @@ export class BookRepository {
   async findById(id: string) {
     return prisma.book.findUnique({ where: { id } })
   }
+
+  async findByAuthorId(authorId: string) {
+    return prisma.book.findMany({
+      where: { authorId },
+      orderBy: { createdAt: 'desc' },
+    })
+  }
 }
