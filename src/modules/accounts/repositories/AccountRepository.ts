@@ -101,4 +101,20 @@ export class AccountRepository {
       },
     })
   }
+
+  async getMeSummary(accountId: string) {
+    const account = await prisma.account.findUnique({
+      where: { id: accountId },
+      select: {
+        _count: {
+          select: {
+            wishlistBooks: true,
+            readBooks: true,
+          },
+        },
+      },
+    })
+
+    return account?._count ?? null
+  }
 }
