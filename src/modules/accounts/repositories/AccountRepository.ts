@@ -1,7 +1,9 @@
 import { prisma } from '@/database/prisma.js'
 import type { CreateAccountDTO } from '@/modules/accounts/dtos/CreateAccountDTO.js'
 import type { AddBookToWishlistDTO } from '../dtos/AddBookToWishlistDTO.js'
+import type { MarkBookAsReadDTO } from '../dtos/MarkBookAsReadDTO.js'
 import type { RemoveBookFromWishlistDTO } from '../dtos/RemoveBookFromWishlistDTO.js'
+import type { UnmarkBookAsRead } from '../dtos/UnmarkBookAsReadDTO.js'
 
 export class AccountRepository {
   async findByEmail(email: string) {
@@ -52,6 +54,45 @@ export class AccountRepository {
       where: { id: accountId },
       select: {
         wishlistBooks: {
+          orderBy: { createdAt: 'desc' },
+          include: {
+            author: { select: { id: true, name: true } },
+          },
+        },
+      },
+    })
+  }
+
+  async markBookAsRead({ accountId, bookId }: MarkBookAsReadDTO) {
+    return prisma.account.update({
+      where: { id: accountId },
+      data: {
+        readBooks: {
+          connect: { id: bookId },
+        },
+      },
+      include: { readBooks: true },
+    })
+  }
+
+  async unmarkBookAsRead({ accountId, bookId }: UnmarkBookAsRead) {
+    return prisma.account.update({
+      where: { id: accountId },
+      data: {
+        readBooks: {
+          disconnect: { id: bookId },
+        },
+      },
+      include: { readBooks: true },
+    })
+  }
+
+  async getReadBooks(accountId: string) {
+    return prisma.account.findUnique({
+      where: { id: accountId },
+      select: {
+        id: true,
+        readBooks: {
           orderBy: { createdAt: 'desc' },
           include: {
             author: { select: { id: true, name: true } },
