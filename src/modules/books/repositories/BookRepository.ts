@@ -1,7 +1,7 @@
 import { prisma } from '@/database/prisma.js'
 import type { CreateBookDTO } from '../dtos/CreateBookDTO.js'
 import type { FindByTitleAndAuthorDTO } from '../dtos/FindByTitleAndAuthorDTO.js'
-import type { FindManyPaginatedDTO } from '../dtos/findManyPaginatedDTO.js'
+import type { FindManyPaginatedDTO } from '../dtos/FindManyPaginatedDTO.js'
 
 export class BookRepository {
   async countByAuthorId(authorId: string) {
