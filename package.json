@@ -10,9 +10,8 @@
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "postinstall": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "Paulo Sérgio",
